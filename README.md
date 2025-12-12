@@ -16,8 +16,6 @@ Frontend: Simple UI using HTML & CSS.
 
 Backend: Python-based logic for model predictions.
 
-Database: MySQL for structured customer data management.
-
 Tech Stack :
 Category	               Tools & Technologies
 Language	               Python, SQL
