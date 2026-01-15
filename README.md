@@ -71,7 +71,3 @@ The models are built using a **Random Forest Ensemble** to handle the non-linear
 
 ---
 
-## 👨‍💻 Author
-**Aditya Pasare**
-
-*Building the future of predictive banking.*
