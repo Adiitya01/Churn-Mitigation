@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elite Banking Insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="Styles.css">
+</head>
+
+<body>
+  <header class="header">
+    <h1>Financial Intelligence Portal</h1>
+    <p>Advanced Churn Prediction & Credit Risk Analytics</p>
+  </header>
+
+  <nav class="tabs">
+    <button id="tab-loyalty" class="tab active" onclick="showTab('loyalty')">Bank Loyalty Check</button>
+    <button id="tab-allowance" class="tab" onclick="showTab('allowance')">Credit Card Allowance</button>
+  </nav>
+
+  <main class="dashboard-container">
+    <!-- INPUT SECTION -->
+    <section id="loyalty-form-panel" class="card">
+      <div id="loyalty-section">
+        <h2 class="form-title">🛡️ Churn Risk Assessment</h2>
+        <form id="loyaltyForm" onsubmit="submitChurn(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Customer ID</label>
+              <input type="text" id="customerId" placeholder="ID-8829" required />
+            </div>
+            <div class="form-group">
+              <label>Age</label>
+              <input type="number" id="loyaltyAge" value="35" required />
+            </div>
+            <div class="form-group">
+              <label>Credit Score</label>
+              <input type="number" id="loyaltyCreditScore" value="650" required />
+            </div>
+            <div class="form-group">
+              <label>Tenure (Years)</label>
+              <input type="number" id="loyaltyTenure" value="5" required />
+            </div>
+            <div class="form-group">
+              <label>Trans. Frequency/Mo.</label>
+              <input type="number" id="transactionFrequency" value="12" required />
+            </div>
+            <div class="form-group">
+              <label>Balance ($)</label>
+              <input type="number" id="balance" value="25000" required />
+            </div>
+            <div class="form-group">
+              <label>Complaints Filed</label>
+              <input type="number" id="complaintsFiled" value="0" required />
+            </div>
+            <div class="form-group">
+              <label>Satisfaction (1-5)</label>
+              <input type="number" id="customerSatisfaction" min="1" max="5" value="4" required />
+            </div>
+            <div class="form-group full">
+              <label class="checkbox-group">
+                <input type="checkbox" id="hasLoan" />
+                <span>Active Loan on Account</span>
+              </label>
+            </div>
+            <div class="form-group full">
+              <label>Avg. Transaction Amount ($)</label>
+              <input type="number" id="avgTransactionAmount" value="450" required />
+            </div>
+          </div>
+          <button type="submit" class="submit-btn" id="churnSubmitBtn">Analyze Risk</button>
+        </form>
+      </div>
+
+      <div id="allowance-section" class="hidden">
+        <h2 class="form-title">💳 Allowance Eligibility</h2>
+        <form id="allowanceForm" onsubmit="submitAllowance(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Credit Score</label>
+              <input type="number" id="allowanceCreditScore" value="720" required />
+            </div>
+            <div class="form-group">
+              <label>Gender</label>
+              <select id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Age</label>
+              <input type="number" id="allowanceAge" value="28" required />
+            </div>
+            <div class="form-group">
+              <label>Tenure</label>
+              <input type="number" id="allowanceTenure" value="3" required />
+            </div>
+            <div class="form-group">
+              <label>Bank Balance ($)</label>
+              <input type="number" id="allowanceBalance" value="12000" required />
+            </div>
+            <div class="form-group">
+              <label>Number of Products</label>
+              <input type="number" id="numOfProducts" value="2" required />
+            </div>
+            <div class="form-group">
+              <label class="checkbox-group">
+                <input type="checkbox" id="hasCrCard" checked />
+                <span>Currently Has Card</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-group">
+                <input type="checkbox" id="isActiveMember" checked />
+                <span>Is Active Member</span>
+              </label>
+            </div>
+            <div class="form-group full">
+              <label>Estimated Annual Salary ($)</label>
+              <input type="number" id="estimatedSalary" value="75000" required />
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">Check Eligibility</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- VISUALIZATION SECTION -->
+    <aside class="viz-panel">
+      <div id="loading" class="card hidden" style="text-align: center;">
+        <p>Crunching Data...</p>
+      </div>
+
+      <div id="result-card" class="card">
+        <div class="risk-meter-container">
+          <div class="risk-circle">
+            <svg class="progress-ring" width="180" height="180">
+              <circle class="progress-ring__background" stroke="rgba(255,255,255,0.05)" stroke-width="12"
+                fill="transparent" r="80" cx="90" cy="90" />
+              <circle id="risk-ring" class="progress-ring__circle" stroke="#6366f1" stroke-width="12"
+                stroke-linecap="round" fill="transparent" r="80" cx="90" cy="90" stroke-dasharray="502.6"
+                stroke-dashoffset="502.6" />
+            </svg>
+            <div style="z-index: 1;">
+              <div id="risk-percentage" class="risk-value">0%</div>
+              <div class="risk-label">Model Score</div>
+            </div>
+          </div>
+          <div id="risk-status" class="status-tag moderate">Waiting for input</div>
+        </div>
+
+        <div style="margin-top: 32px;">
+          <div class="insight-card">
+            <div class="insight-title">Machine Learning Prediction</div>
+            <div id="pred-text" class="insight-content">Enter data to see analysis.</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <div class="insight-card">
+            <div class="insight-title">Model Confidence</div>
+            <div id="confidence-bar"
+              style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 8px; overflow: hidden;">
+              <div id="confidence-inner"
+                style="height: 100%; width: 0%; background: var(--primary); transition: width 0.8s ease;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
